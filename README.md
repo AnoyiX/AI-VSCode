@@ -8,8 +8,8 @@ AI-VSCode based on [openvscode-server](https://github.com/gitpod-io/openvscode-s
 
 #### 🐳 Run openvscode-server
 
-```bash
-docker run -d -p 3000:3000 anoyi/ai-vscode --without-connection-token
+```sh
+docker run -d -p 3000:3000 anoyi/ai-vscode -- --host 0.0.0.0 --without-connection-token
 ```
 
 Visit the URL printed in your terminal. [http://localhost:3000/](http://localhost:3000/)

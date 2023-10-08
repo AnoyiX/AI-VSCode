@@ -35,8 +35,6 @@ RUN sed -i "s@archive.ubuntu.com@mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/source
     && git lfs install \
     && rm -rf /var/lib/apt/lists/*
 
-RUN yes | sh -c "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
 WORKDIR /home/
 
 # Downloading the latest VSC Server release and extracting the release archive
@@ -70,10 +68,13 @@ RUN chmod g+rw /home && \
 
 USER $USERNAME
 
+# Install oh-my-zsh & Init
+RUN yes | sh -c "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 # Install VSCode Extensions
 RUN ${OPENVSCODE} --install-extension ms-python.python && \
     ${OPENVSCODE} --install-extension monokai.theme-monokai-pro-vscode
 
 EXPOSE 3000
 
-ENTRYPOINT ["/bin/sh", "-c", "exec $OPENVSCODE --host 0.0.0.0 $@"]
+ENTRYPOINT ["/bin/sh", "-c", "exec $OPENVSCODE $@"]
