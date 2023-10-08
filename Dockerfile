@@ -1,6 +1,6 @@
 FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
 
-ENV USERNAME=vscode \
+ENV USERNAME=user \
     USER_UID=1000 \
     USER_GID=1000 \
     LANG=C.UTF-8 \
@@ -8,8 +8,8 @@ ENV USERNAME=vscode \
     EDITOR=code \
     VISUAL=code \
     GIT_EDITOR="code --wait" \
-    OPENVSCODE_SERVER_ROOT=/home/vscode \
-    OPENVSCODE=/home/vscode/bin/openvscode-server
+    OPENVSCODE_SERVER_ROOT=/home/.vscode \
+    OPENVSCODE=/home/.vscode/bin/openvscode-server
 
 RUN sed -i "s@archive.ubuntu.com@mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list && \
     sed -i "s@security.ubuntu.com@mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list && \
@@ -50,11 +50,11 @@ RUN RELEASE_TAG=$(curl -sX GET "https://api.github.com/repos/gitpod-io/openvscod
     fi && \
     wget https://ghproxy.com/https://github.com/gitpod-io/openvscode-server/releases/download/${RELEASE_TAG}/${RELEASE_TAG}-linux-${arch}.tar.gz && \
     tar -xzf ${RELEASE_TAG}-linux-${arch}.tar.gz && \
-    mv ${RELEASE_TAG}-linux-${arch} ${USERNAME} && \
-    cp ${USERNAME}/bin/remote-cli/openvscode-server ${USERNAME}/bin/remote-cli/code && \
+    mv ${RELEASE_TAG}-linux-${arch} ${OPENVSCODE_SERVER_ROOT} && \
+    cp ${OPENVSCODE_SERVER_ROOT}/bin/remote-cli/openvscode-server ${OPENVSCODE_SERVER_ROOT}/bin/remote-cli/code && \
     rm -f ${RELEASE_TAG}-linux-${arch}.tar.gz
 
-WORKDIR /home/workspace/
+WORKDIR /home/user/
 
 # Creating the user and usergroup
 RUN groupadd --gid ${USER_GID} ${USERNAME} \
@@ -63,7 +63,7 @@ RUN groupadd --gid ${USER_GID} ${USERNAME} \
     && chmod 0440 /etc/sudoers.d/${USERNAME}
 
 RUN chmod g+rw /home && \
-    chown -R ${USERNAME}:${USERNAME} /home/workspace && \
+    chown -R ${USERNAME}:${USERNAME} ${OPENVSCODE_SERVER_ROOT} && \
     chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}
 
 USER $USERNAME
