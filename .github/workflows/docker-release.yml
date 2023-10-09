@@ -1,20 +1,11 @@
 name: DockerHub Release
 on:
-  workflow_call:
-    inputs:
-      version:
-        description: 'AI VSCode Server version'
-        type: string
-        required: true
-      stable:
-        description: 'Stable or insiders release'
-        type: boolean
-        required: true
-    secrets:
-      DOCKERHUB_USERNAME:
-        required: true
-      DOCKERHUB_TOKEN:
-        required: true
+  push:
+    branches:
+      - main
+    paths:
+      - "Dockerfile"
+      - "requirements.txt"
 
 jobs:
   docker-release:
@@ -31,12 +22,6 @@ jobs:
         uses: docker/setup-buildx-action@v2
         with:
           install: true
-      
-      - name: Set Version
-        run: |
-          set -e
-          version=${{ inputs.version }}
-          echo "RELEASE_TAG=v${version}" >> $GITHUB_ENV
 
       - name: Docker meta
         id: meta
@@ -45,7 +30,6 @@ jobs:
           images: |
             anoyi/ai-vscode
           tags: |
-            type=raw,value=${{ inputs.version }}
             type=raw,value=latest
 
       - name: Login to DockerHub
@@ -63,6 +47,4 @@ jobs:
             linux/amd64
             linux/arm64
             linux/arm/v7
-          build-args: |
-            RELEASE_TAG=${{ env.RELEASE_TAG }}
           tags: ${{ steps.meta.outputs.tags }}
