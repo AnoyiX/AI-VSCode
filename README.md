@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="100%" src="https://cdn.jsdelivr.net/gh/AnoyiX/cdn@main/vscode/main.png" />  
+  <img src="https://cdn.jsdelivr.net/gh/AnoyiX/cdn@main/vscode/main.png" width="100%" style="border-radius:5%" />  
 </p>
 
 ## 🚀 Quick Start
