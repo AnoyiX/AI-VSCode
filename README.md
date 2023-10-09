@@ -8,17 +8,17 @@ AI-VSCode based on [openvscode-server](https://github.com/gitpod-io/openvscode-s
 docker run -d -p 3000:3000 anoyi/ai-vscode -- --host 0.0.0.0 --without-connection-token
 ```
 
-After this, Visit [http://localhost:3000/](http://localhost:3000/).
+Then visit [http://localhost:3000/](http://localhost:3000/).
 
 There are some possible entrypoint arguments:
 
-| ARG                        | Type   | Default Value | Description                            |
-| -------------------------- | ------ | ------------- | -------------------------------------- |
-| --host                     | string | localhost     | the host the server is listening on    |
-| --port                     | number | 3000          | the port number to start the server on |
-| --without-connection-token |        |               | access without token                   |
-| --connection-token         | string |               | access with specified token            |
-| --connection-token-file    | string |               | the token file path                    |
+| Argument                   | Type   | Default   | Description                            |
+| -------------------------- | ------ | --------- | -------------------------------------- |
+| --host                     | string | localhost | the host the server is listening on    |
+| --port                     | number | 3000      | the port number to start the server on |
+| --without-connection-token |        |           | access without token                   |
+| --connection-token         | string |           | access with specified token            |
+| --connection-token-file    | string |           | the token file path                    |
 
 ### User Settings
 
