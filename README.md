@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="100%" src="https://cdn.jsdelivr.net/gh/AnoyiX/cdn@main/vscode/main.png" />  
+</p>
+
 ## 🚀 Quick Start
 
 AI-VSCode based on [openvscode-server](https://github.com/gitpod-io/openvscode-server).
