@@ -1,0 +1,68 @@
+name: DockerHub Release
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'AI VSCode Server version'
+        type: string
+        required: true
+      stable:
+        description: 'Stable or insiders release'
+        type: boolean
+        required: true
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+
+jobs:
+  docker-release:
+    runs-on: ubuntu-latest
+    name: Build and publish Docker image
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          install: true
+      
+      - name: Set Version
+        run: |
+          set -e
+          version=${{ inputs.version }}
+          echo "RELEASE_TAG=v${version}" >> $GITHUB_ENV
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            anoyi/ai-vscode
+          tags: |
+            type=raw,value=${{ inputs.version }}
+            type=raw,value=latest
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          context: .
+          platforms: |
+            linux/amd64
+            linux/arm64
+            linux/arm/v7
+          build-args: |
+            RELEASE_TAG=${{ env.RELEASE_TAG }}
+          tags: ${{ steps.meta.outputs.tags }}

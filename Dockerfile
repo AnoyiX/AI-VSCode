@@ -11,9 +11,7 @@ ENV USERNAME=user \
     OPENVSCODE_SERVER_ROOT=/home/.vscode \
     OPENVSCODE=/home/.vscode/bin/openvscode-server
 
-RUN sed -i "s@archive.ubuntu.com@mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list && \
-    sed -i "s@security.ubuntu.com@mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list && \
-    apt update && \
+RUN apt update && \
     apt install -y --no-install-recommends \
         curl \
         git \
@@ -48,7 +46,7 @@ RUN RELEASE_TAG=$(curl -sX GET "https://api.github.com/repos/gitpod-io/openvscod
     elif [ "${arch}" = "armv7l" ]; then \
         arch="armhf"; \
     fi && \
-    wget https://ghproxy.com/https://github.com/gitpod-io/openvscode-server/releases/download/${RELEASE_TAG}/${RELEASE_TAG}-linux-${arch}.tar.gz && \
+    wget https://github.com/gitpod-io/openvscode-server/releases/download/${RELEASE_TAG}/${RELEASE_TAG}-linux-${arch}.tar.gz && \
     tar -xzf ${RELEASE_TAG}-linux-${arch}.tar.gz && \
     mv ${RELEASE_TAG}-linux-${arch} ${OPENVSCODE_SERVER_ROOT} && \
     cp ${OPENVSCODE_SERVER_ROOT}/bin/remote-cli/openvscode-server ${OPENVSCODE_SERVER_ROOT}/bin/remote-cli/code && \
@@ -69,12 +67,15 @@ RUN chmod g+rw /home && \
 USER $USERNAME
 
 # Install oh-my-zsh & Init
-RUN yes | sh -c "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+RUN yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Install VSCode Extensions
 RUN ${OPENVSCODE} --install-extension ms-python.python && \
     ${OPENVSCODE} --install-extension monokai.theme-monokai-pro-vscode
 
-EXPOSE 3000
+# Install python packages
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt && \
+    rm -rf requirements.txt
 
 ENTRYPOINT ["/bin/sh", "-c", "exec $OPENVSCODE $@"]

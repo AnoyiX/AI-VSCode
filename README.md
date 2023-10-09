@@ -1,22 +1,28 @@
-<p align="center">
-  <h2 align="center">Visual Studio Code for AI Developer</h2>
-</p>
-
-### 🚀 Quick Start
+## 🚀 Quick Start
 
 AI-VSCode based on [openvscode-server](https://github.com/gitpod-io/openvscode-server).
 
-#### 🐳 Run openvscode-server
+### Start Server
 
 ```sh
 docker run -d -p 3000:3000 anoyi/ai-vscode -- --host 0.0.0.0 --without-connection-token
 ```
 
-Visit the URL printed in your terminal. [http://localhost:3000/](http://localhost:3000/)
+After this, Visit [http://localhost:3000/](http://localhost:3000/).
 
-#### 🌈 User Settings
+There are some possible entrypoint arguments:
 
-When you first access ，Enter `command + shift + p`，input `user` and select `Perferences: Open User Settings (JSON)`，copy below config to your editor and save.
+| ARG                        | Type   | Default Value | Description                            |
+| -------------------------- | ------ | ------------- | -------------------------------------- |
+| --host                     | string | localhost     | the host the server is listening on    |
+| --port                     | number | 3000          | the port number to start the server on |
+| --without-connection-token |        |               | access without token                   |
+| --connection-token         | string |               | access with specified token            |
+| --connection-token-file    | string |               | the token file path                    |
+
+### User Settings
+
+Enter `command + shift + p`, then input `user` and select `Perferences: Open User Settings (JSON)`, copy below config to your editor and save.
 
 ```json
 {
@@ -27,5 +33,3 @@ When you first access ，Enter `command + shift + p`，input `user` and select `
     "editor.fontSize": 14
 }
 ```
-
-
