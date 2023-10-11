@@ -1,13 +1,5 @@
 FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
 
-ENV LANG=C.UTF-8 \
-    LC_ALL=C.UTF-8 \
-    EDITOR=code \
-    VISUAL=code \
-    GIT_EDITOR="code --wait" \
-    OPENVSCODE_SERVER_ROOT=/home/.vscode \
-    OPENVSCODE=/home/.vscode/bin/openvscode-server
-
 RUN apt update && \
     apt install -y --no-install-recommends \
         curl \
@@ -31,6 +23,14 @@ RUN apt update && \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home/
+
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    EDITOR=code \
+    VISUAL=code \
+    GIT_EDITOR="code --wait" \
+    OPENVSCODE_SERVER_ROOT=/home/.vscode \
+    OPENVSCODE=/home/.vscode/bin/openvscode-server
 
 # Downloading the latest VSC Server release and extracting the release archive
 # Rename `openvscode-server` cli tool to `code` for convenience
