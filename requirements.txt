@@ -1,4 +1,6 @@
 requests
 rich
 torch
+torchvision
+torchaudio
 transformers
