@@ -1,9 +1,6 @@
 FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
 
-ENV USERNAME=user \
-    USER_UID=1000 \
-    USER_GID=1000 \
-    LANG=C.UTF-8 \
+ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
     EDITOR=code \
     VISUAL=code \
@@ -51,20 +48,6 @@ RUN RELEASE_TAG=$(curl -sX GET "https://api.github.com/repos/gitpod-io/openvscod
     mv ${RELEASE_TAG}-linux-${arch} ${OPENVSCODE_SERVER_ROOT} && \
     cp ${OPENVSCODE_SERVER_ROOT}/bin/remote-cli/openvscode-server ${OPENVSCODE_SERVER_ROOT}/bin/remote-cli/code && \
     rm -f ${RELEASE_TAG}-linux-${arch}.tar.gz
-
-WORKDIR /home/user/
-
-# Creating the user and usergroup
-RUN groupadd --gid ${USER_GID} ${USERNAME} \
-    && useradd --uid ${USER_UID} --gid ${USERNAME} -m -s /bin/bash ${USERNAME} \
-    && echo ${USERNAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USERNAME} \
-    && chmod 0440 /etc/sudoers.d/${USERNAME}
-
-RUN chmod g+rw /home && \
-    chown -R ${USERNAME}:${USERNAME} ${OPENVSCODE_SERVER_ROOT} && \
-    chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}
-
-USER $USERNAME
 
 # Install oh-my-zsh & Init
 RUN yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
