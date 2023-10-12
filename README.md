@@ -37,3 +37,14 @@ Enter `command + shift + p`, then input `user` and select `Perferences: Open Use
     "editor.fontSize": 14
 }
 ```
+
+
+## ☁️ Cloud
+
+### Huggingface
+
+1. Create a new Space
+2. Copy file `Dockerfile.huggingface` and `requirements.txt` to Space
+3. Rename `Dockerfile.huggingface` to `Dockerfile`
+
+huggingface will build and run automatically
