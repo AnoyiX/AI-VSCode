@@ -34,7 +34,8 @@ Enter `command + shift + p`, then input `user` and select `Perferences: Open Use
     "workbench.iconTheme": "Monokai Pro (Filter Spectrum) Icons",
     "window.menuBarVisibility": "classic",
     "terminal.integrated.defaultProfile.linux": "zsh",
-    "editor.fontSize": 14
+    "editor.fontSize": 14,
+    "files.autoSave": "afterDelay"
 }
 ```
 
