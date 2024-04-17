@@ -26,6 +26,8 @@ WORKDIR /home/
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
+    NVIDIA_VISIBLE_DEVICES=all \
+    NVIDIA_DRIVER_CAPABILITIES=all \
     EDITOR=code \
     VISUAL=code \
     GIT_EDITOR="code --wait" \
